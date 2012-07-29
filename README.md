@@ -1,2 +1,2 @@
-jsnoticebox
-===========
+jsNoticeBox
+A javascript widget.
