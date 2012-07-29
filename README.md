@@ -1,2 +1,0 @@
-jsNoticeBox
-A javascript widget.
