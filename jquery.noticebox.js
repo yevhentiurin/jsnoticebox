@@ -4,32 +4,32 @@ var debug = false;
 debug = window.console != undefined ? debug : false;
 
 //***************************
-$.jsnoticebox = {
+$.noticebox = {
   options: {
     lineHeight: 19
   }
 };
 
 //***************************
-$.fn.jsnoticebox = function( options ) {
-  var jsnoticeboxOptions = {};
-  $.extend( jsnoticeboxOptions, $.jsnoticebox.options, options );
+$.fn.noticebox = function( options ) {
+  var noticeboxOptions = {};
+  $.extend( noticeboxOptions, $.noticebox.options, options );
   
   return this.each( function () {
-    var jsnoticebox = new NoticeBox( this, jsnoticeboxOptions );
+    var noticebox = new NoticeBox( this, noticeboxOptions );
   });
 };
 
-// jsnoticebox constructor
+// noticebox constructor
 function NoticeBox( element, options ) {
-  var jsnoticebox = this;
+  var noticebox = this;
   
-  jsnoticebox.options = options;
-  jsnoticebox.$container = $( element );
-  jsnoticebox.initContent = jsnoticebox.$container.text();
+  noticebox.options = options;
+  noticebox.$container = $( element );
+  noticebox.initContent = noticebox.$container.text();
   
-  // create jsnoticebox elements
-  jsnoticebox.$container
+  // create noticebox elements
+  noticebox.$container
     .html([
       '<canvas />',
       '<div class="dot-nest">',
@@ -46,14 +46,14 @@ function NoticeBox( element, options ) {
     .draggable({ handle: '.control-drag' });
   
   var 
-    $canvas = jsnoticebox.$container.find( 'canvas' ),
-    $dotNest = jsnoticebox.$container.find( '.dot-nest' ),
-    $freeDot = jsnoticebox.$container.find( '.dot' ),
-    $box = jsnoticebox.$container.find( '.box' ),
-    $textarea = jsnoticebox.$container.find( '.textarea' ),
-    $controlDrag = jsnoticebox.$container.find( '.control-drag' ),
-    $controlResize = jsnoticebox.$container.find( '.control-resize' ),
-    $controlNewdot = jsnoticebox.$container.find( '.control-newdot' ),
+    $canvas = noticebox.$container.find( 'canvas' ),
+    $dotNest = noticebox.$container.find( '.dot-nest' ),
+    $freeDot = noticebox.$container.find( '.dot' ),
+    $box = noticebox.$container.find( '.box' ),
+    $textarea = noticebox.$container.find( '.textarea' ),
+    $controlDrag = noticebox.$container.find( '.control-drag' ),
+    $controlResize = noticebox.$container.find( '.control-resize' ),
+    $controlNewdot = noticebox.$container.find( '.control-newdot' ),
     dots = [];
   
   // handle styling
@@ -77,14 +77,14 @@ function NoticeBox( element, options ) {
   $box.css({
     position: 'absolute',
     top: 0,
-    width: jsnoticebox.$container.width()
+    width: noticebox.$container.width()
   });
   
   $textarea.css({
     padding: '4px 6px',
-    minHeight: jsnoticebox.options.lineHeight * 2, 
-    lineHeight: jsnoticebox.options.lineHeight + 'px'
-  }).html( jsnoticebox.initContent );
+    minHeight: noticebox.options.lineHeight * 2, 
+    lineHeight: noticebox.options.lineHeight + 'px'
+  }).html( noticebox.initContent );
   
   $controlDrag.css({ 
     position: 'absolute',
@@ -114,7 +114,7 @@ function NoticeBox( element, options ) {
     cursor: 'pointer'
   });
   
-  // handle elements positions every time jsnoticebox resized
+  // handle elements positions every time noticebox resized
   var handlePositions = (function() {
     var boxWidth = $box.width();
     
@@ -157,7 +157,7 @@ function NoticeBox( element, options ) {
       minTop -= 6;
       maxTop += 6;
       
-      var canvasPosition = jsnoticebox.translateOffset({ left: minLeft, top: minTop }, jsnoticebox.$container );
+      var canvasPosition = noticebox.translateOffset({ left: minLeft, top: minTop }, noticebox.$container );
       
       return {      
         width: maxLeft - minLeft, 
@@ -191,23 +191,23 @@ function NoticeBox( element, options ) {
       $newDot
         .css({
           display: 'block',
-          left: $controlNewdot.offset().left - jsnoticebox.$container.offset().left,
-          top: $controlNewdot.offset().top - jsnoticebox.$container.offset().top
+          left: $controlNewdot.offset().left - noticebox.$container.offset().left,
+          top: $controlNewdot.offset().top - noticebox.$container.offset().top
         })
-        .appendTo( jsnoticebox.$container )
+        .appendTo( noticebox.$container )
         .draggable({
           drag: function( event, ui ) {
-            $( jsnoticebox ).trigger( 'dotdrag' );
+            $( noticebox ).trigger( 'dotdrag' );
           },
         })
         .click( function() {
           $newDot.remove();
-          $( jsnoticebox ).trigger( 'dotdestroy' );
+          $( noticebox ).trigger( 'dotdestroy' );
         });
         
       $controlNewdot.css({ left: 0, top: controlNewdotStartDragTop });
       dots.push( $newDot );
-      $( jsnoticebox ).trigger( 'dotcreate' );
+      $( noticebox ).trigger( 'dotcreate' );
     }
   });
   
@@ -216,7 +216,7 @@ function NoticeBox( element, options ) {
   $textarea
     .keyup( function() {
       if ( textareaHeight != $textarea.height() )
-        $( jsnoticebox ).trigger( 'resize' );
+        $( noticebox ).trigger( 'resize' );
       
       textareaHeight = $textarea.height();
     });
@@ -231,20 +231,20 @@ function NoticeBox( element, options ) {
       },
       drag: function( event, ui ) {
         $box.width( resizeStartWidth + ( ui.position.left - ui.originalPosition.left ) * 2 );
-        $( jsnoticebox ).trigger( 'resize' );
+        $( noticebox ).trigger( 'resize' );
       }
     });
   
-  // handle jsnoticebox resize
+  // handle noticebox resize
   var handleResize = (function() {
     handlePositions();
     
     // calculate canvas coords
-    // jsnoticebox center
+    // noticebox center
     var nbCenterOffset = $box.offset();
     nbCenterOffset.left += $box.width() / 2;
     nbCenterOffset.top += $box.height() / 2;
-    nbCenterOffset = jsnoticebox.translateOffset( nbCenterOffset, $canvas );
+    nbCenterOffset = noticebox.translateOffset( nbCenterOffset, $canvas );
     var nbCenter = { x: nbCenterOffset.left, y: nbCenterOffset.top };
     
     // dots coords
@@ -255,7 +255,7 @@ function NoticeBox( element, options ) {
       if ( dotOffset.left == 0 || dotOffset.top == 0 )
         return true;
         
-      dotOffset = jsnoticebox.translateOffset( dotOffset, $canvas );
+      dotOffset = noticebox.translateOffset( dotOffset, $canvas );
       
       dotsCoords.push({ 
         x: dotOffset.left + ( $dot.width() / 2 ),
@@ -265,7 +265,7 @@ function NoticeBox( element, options ) {
     
     // box coords
     var 
-      boxOffset = jsnoticebox.translateOffset( $box.offset(), $canvas ),
+      boxOffset = noticebox.translateOffset( $box.offset(), $canvas ),
       boxWidth = $box.width(),
       boxHeight = $box.height(),
       boxCoords = [
@@ -275,7 +275,7 @@ function NoticeBox( element, options ) {
         { x: boxOffset.left, y: ( boxOffset.top + boxHeight ) }
       ];
     
-    jsnoticebox.drawBackground( $canvas, {
+    noticebox.drawBackground( $canvas, {
       nbCenter: nbCenter,
       dots: dotsCoords,
       box: boxCoords
@@ -284,12 +284,12 @@ function NoticeBox( element, options ) {
     return arguments.callee;
   })();
   
-  $( jsnoticebox ).bind( 'resize dotdrag dotcreate dotdestroy', handleResize );
+  $( noticebox ).bind( 'resize dotdrag dotcreate dotdestroy', handleResize );
   
-  debug ? console.log( jsnoticebox ) : null;
+  debug ? console.log( noticebox ) : null;
 };
 
-// jsnoticebox prototype
+// noticebox prototype
 NoticeBox.prototype = {
   translateOffset: function( targetOffset, $translator ) {
     var translatorOffset = $translator.offset();
@@ -406,5 +406,5 @@ var geometry = {
 
 })( jQuery );
 
-// apply jsnoticebox plugin to elements with "jsnoticebox" class 
-$( function() { $( ".jsnoticebox" ).jsnoticebox(); });
+// apply noticebox plugin to elements with "noticebox" class 
+$( function() { $( ".noticebox" ).noticebox(); });

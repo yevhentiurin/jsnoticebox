@@ -1,0 +1,30 @@
+{
+    "name": "noticebox",
+    "title": "NoticeBox.js",
+    "description": "NoticeBox is a javascript widget that allows you to add a dynamic tip-like text box to your webpage.",
+    "keywords": [
+        "ui",
+        "input",
+        "canvas",
+        "widget"
+    ],
+    "version": "0.1.0",
+    "author": {
+        "name": "Yevhen Tiurin",
+        "email" : "yevhentiurin@gmail.com",
+        "url": "https://github.com/yevhentiurin"
+    },
+    "licenses": [
+    {
+        "type": "LGPLv3",
+        "url": "http://www.gnu.org/licenses/lgpl.txt"
+    }
+    ],
+    "bugs": "https://github.com/yevhentiurin/jsnoticebox/issues",
+    "homepage": "https://github.com/yevhentiurin/jsnoticebox",
+    "demo": "http://yevhentiurin.github.io/jsnoticebox/",
+    "download": "https://github.com/yevhentiurin/jsnoticebox/archive/master.zip",
+    "dependencies": {
+        "jquery": ">=1.3"
+    }
+}
